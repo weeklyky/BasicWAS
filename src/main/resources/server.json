@@ -1,0 +1,46 @@
+{
+  "port" : 8080,
+
+  "hosts" : {
+    "default" : {
+      "httpRoot" : "./static/",
+      "indexPage" : "index.html",
+      "errorPages" :{
+        "404" : "/error/404.html",
+        "403" : "/error/403.html",
+        "500" : "/error/500.html"
+      }
+    }
+    ,
+
+    "61.98.91.207:8080" : {
+      "httpRoot" : "./static/",
+      "indexPage" : "my.html",
+      "errorPages" :{
+        "404" : "/error/404.html",
+        "403" : "/error/403.html",
+        "500" : "/error/500.html"
+      }
+    },
+    "127.0.0.1:8080" : {
+      "httpRoot" : "./static/",
+      "indexPage" : "index.html",
+      "errorPages" :{
+        "404" : "/error/404.html",
+        "403" : "/error/403.html",
+        "500" : "/error/500.html"
+      }
+    },
+
+
+    "localhost:8080" : {
+      "httpRoot" : "./static/",
+      "indexPage" : "my.html",
+      "errorPages" :{
+        "404" : "/error/403.html",
+        "403" : "/error/500.html",
+        "500" : "/error/404.html"
+      }
+    }
+  }
+}
