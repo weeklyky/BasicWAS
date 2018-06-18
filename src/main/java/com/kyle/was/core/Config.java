@@ -1,4 +1,4 @@
-package com.kyle.was;
+package com.kyle.was.core;
 
 
 import com.google.gson.Gson;
@@ -16,6 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Config {
+
+    /*TODO
+    * This should be more simple json reader(Not the VO style).
+    * e.g. Config.getConfig("server.port")
+    * or Consider to make customized annotation.
+    * */
     private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
     private static final String DEFAULT = "default";

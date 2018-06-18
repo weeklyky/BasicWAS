@@ -1,5 +1,12 @@
-package com.kyle.was;
+package com.kyle.was.core;
 
+import com.kyle.was.router.rule.ErrorPageRoutingRule;
+import com.kyle.was.router.rule.IndexPageRoutingRule;
+import com.kyle.was.router.rule.ServletByClassNameRoutingRule;
+import com.kyle.was.units.HttpRequest;
+import com.kyle.was.units.HttpResponse;
+import com.kyle.was.router.StaticWebRouter;
+import com.kyle.was.router.rule.RoutingRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,15 +26,23 @@ public class BasicWebAppSocket {
     private static final Logger logger = LoggerFactory.getLogger(BasicWebAppServer.class);
 
     private static final Pattern RequestHeaderFirstLine = Pattern.compile("^(?<method>[A-Za-z]+) (?<location>[^ \\?]+)(?<query>[^ ]*) (?<protocol>.+)");
+    public static String newline = System.getProperty("line.separator");
 
     private final AsynchronousSocketChannel socketChannel;
 
-    private RequestRouter router = BasicRequestRouter.getInstance();
+    private RoutingRule router;
     private static final int socketReadBufferSize = 1000;
 
     public BasicWebAppSocket(AsynchronousSocketChannel socketChannel) {
 
         this.socketChannel = socketChannel;
+
+        router = StaticWebRouter.getInstance();
+        /*Caution! Order of the rules matter!*/
+        router = new ErrorPageRoutingRule(router);
+        router = new ServletByClassNameRoutingRule(router);
+        router = new IndexPageRoutingRule(router);
+
     }
     
 
@@ -60,16 +75,10 @@ public class BasicWebAppSocket {
 
     private void parseRequest(String requestString) {
         logger.debug("request Raw: {}", requestString);
-        String[] headerAndBody = requestString.split("\\s{2}");
-        Pattern extract = Pattern.compile("^(?<method>[^\\s{2}]*) (?<location>[^ \\?]+)(?<query>[^ ]*) (?<protocol>.+)");
 
-        String body = null;
+        byte[] body = null;
 
-        if(headerAndBody.length>1){
-            body = headerAndBody[1];
-        }
-
-        StringTokenizer tokenizer = new StringTokenizer(headerAndBody[0], "\n");
+        StringTokenizer tokenizer = new StringTokenizer(requestString, "\n");
         String firstLine = tokenizer.nextToken();
         logger.debug("Header (First Line) {}", firstLine);
         Matcher matcher = RequestHeaderFirstLine.matcher(firstLine);
@@ -88,12 +97,27 @@ public class BasicWebAppSocket {
         Map<String, String> header = new HashMap<String, String>();
         while (tokenizer.hasMoreTokens()) {
             String line = tokenizer.nextToken();
-            System.out.println(line);
             String[] keyValue = line.split("\\s*:\\s*");
+            if(line.length()<2){
+                break;
+            }
+            //System.out.println("?");
             header.put(keyValue[0].toUpperCase(), keyValue[1]);
         }
 
-        logger.debug("Header {}", header);
+        //for POST Body
+        StringBuilder stringBuilder = new StringBuilder();
+        while (tokenizer.hasMoreTokens()) {
+            stringBuilder.append(tokenizer.nextToken());
+            stringBuilder.append(newline);
+        }
+        if(stringBuilder.length()>0){
+            body = stringBuilder.toString().getBytes();
+        }
+
+        logger.debug("Header(keys): {}", header.keySet());
+        logger.debug("Header-Host: {}", header.get("HOST"));
+        logger.debug("Body : {}", body);
 
 
         HttpRequest req = HttpRequest.builder()

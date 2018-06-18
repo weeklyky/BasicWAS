@@ -1,4 +1,4 @@
-package com.kyle.was;
+package com.kyle.was.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

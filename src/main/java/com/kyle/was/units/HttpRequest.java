@@ -1,4 +1,4 @@
-package com.kyle.was;
+package com.kyle.was.units;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class HttpRequest {
     private String requestBody;
     private Map<String, List<String>> parameters;
     private String protocol;
-    private String body;
+    private byte[] body;
 
     private HttpRequest() {
     }
@@ -118,7 +118,7 @@ public class HttpRequest {
             return this.host(header.get("HOST"));
         }
 
-        public Builder body(String body) {
+        public Builder body(byte[] body) {
             instance.body = body;
             return this;
         }

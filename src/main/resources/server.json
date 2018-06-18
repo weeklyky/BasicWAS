@@ -13,7 +13,7 @@
     }
     ,
 
-    "61.98.91.207:8080" : {
+    "61.98.91.207" : {
       "httpRoot" : "./static/",
       "indexPage" : "my.html",
       "errorPages" :{
@@ -22,7 +22,7 @@
         "500" : "/error/500.html"
       }
     },
-    "127.0.0.1:8080" : {
+    "127.0.0.1" : {
       "httpRoot" : "./static/",
       "indexPage" : "index.html",
       "errorPages" :{
@@ -33,7 +33,7 @@
     },
 
 
-    "localhost:8080" : {
+    "localhost" : {
       "httpRoot" : "./static/",
       "indexPage" : "my.html",
       "errorPages" :{

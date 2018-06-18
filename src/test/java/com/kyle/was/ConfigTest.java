@@ -1,5 +1,6 @@
 package com.kyle.was;
 
+import com.kyle.was.core.Config;
 import org.junit.Before;
 import org.junit.Test;
 

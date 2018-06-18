@@ -1,8 +1,8 @@
 package service;
 
-import com.kyle.was.HttpRequest;
-import com.kyle.was.HttpResponse;
-import com.kyle.was.SimpleServlet;
+import com.kyle.was.units.HttpRequest;
+import com.kyle.was.units.HttpResponse;
+import com.kyle.was.servlet.SimpleServlet;
 
 import java.io.IOException;
 
